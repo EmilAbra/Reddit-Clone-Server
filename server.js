@@ -71,8 +71,10 @@ app.get("/posts/:id", async (req, res) => {
       })
       .then(async (post) => {
         const likes = await prisma.like.findMany({
-          where: { userId: res.cookies.userId },
-          commentId: { in: post.comments.map((comment) => comment.id) },
+          where: {
+            userId: req.cookies.userId,
+            commentId: { in: post.comments.map((comment) => comment.id) },
+          },
         });
 
         return {
